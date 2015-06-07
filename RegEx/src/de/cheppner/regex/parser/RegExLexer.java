@@ -1,4 +1,4 @@
-// Generated from C:\projects\luna_workspace\RegEx\src\de\cheppner\regex\parser\RegEx.g4 by ANTLR 4.5
+// Generated from C:\Users\clemens\git\regex\RegEx\..\\RegEx\src\de\cheppner\regex\parser\RegEx.g4 by ANTLR 4.5
 package de.cheppner.regex.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

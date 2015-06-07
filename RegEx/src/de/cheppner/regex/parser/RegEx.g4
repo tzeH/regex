@@ -4,11 +4,9 @@ grammar RegEx;
 
 init : expression | ;
 
-expression : term
-	| term '|' expression;
+expression : term ('|' term)*;
 
 term : factor+ ;
-//	| factor term;
 
 factor : atom
 	| atom metacharacter;

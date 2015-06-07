@@ -1,6 +1,6 @@
 package de.cheppner.regex;
 
-import java.util.List;
+import java.util.Iterator;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -22,9 +22,8 @@ public class Compiler {
 		// String text = "xxxxy";
 		// // email
 		// String regex = "([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})";
-//		String regex = "(.+)@(.+)\\.(.+)";
-//		String text = "ch@cheppner.de";
-		
+		// String regex = "(.+)@(.+)\\.(.+)";
+		// String text = "ch@cheppner.de";
 
 		String regex = "(ab+|bbc)@cheppner\\.de";
 		String text = "bbc@cheppner.de";
@@ -50,7 +49,7 @@ public class Compiler {
 
 		// parser.setTrace(true);
 		InitContext tree = parser.init();
-//		System.out.println(tree.toStringTree(parser));
+		// System.out.println(tree.toStringTree(parser));
 
 		State begin = new State();
 		State end = parse(begin, tree);
@@ -64,14 +63,12 @@ public class Compiler {
 	}
 
 	private State parse(final State input, final ExpressionContext expression) {
-		if (expression.expression() == null)
-			return parse(input, expression.term());
-
-		State termEnd = parse(input, expression.term());
-		State expressionEnd = parse(input, expression.expression());
-
-		expressionEnd.addNext(termEnd);
-
+		Iterator<TermContext> it = expression.term().iterator();
+		State termEnd = parse(input, it.next());
+		while (it.hasNext()) {
+			State alternativeEnd = parse(input, it.next());
+			alternativeEnd.addNext(termEnd);
+		}
 		return termEnd;
 	}
 
@@ -81,11 +78,6 @@ public class Compiler {
 			result = parse(result, factor);
 		}
 		return result;
-		
-//		if (term.term() == null)
-//			return parse(input, term.factor());
-//
-//		return parse(parse(input, term.factor()), term.term());
 	}
 
 	private State parse(final State input, final FactorContext factor) {
