@@ -57,40 +57,26 @@ public class Benchmark {
 				+ "\" ##");
 
 		System.out.println("full cyles (including compilation)");
-		compareBench("own", "java", runs, () -> runOwn(pattern, text, runs),
-				() -> runJava(pattern, text, runs));
+		compareBench("own", "java", runs, //
+				() -> Compiler.compile(pattern).matcher(text).matches(), //
+				() -> java.util.regex.Pattern.compile(pattern).matcher(text)
+						.matches());
 
 		System.out.println("only matching (no compilation)");
 		Pattern ownCompiled = Compiler.compile(pattern);
 		java.util.regex.Pattern javaCompiled = java.util.regex.Pattern
 				.compile(pattern);
-		compareBench("own", "java", runs,
-				() -> runOwn(ownCompiled, text, runs),
-				() -> runJava(javaCompiled, text, runs));
+		compareBench("own", "java", runs,//
+				() -> ownCompiled.matcher(text).matches(),//
+				() -> javaCompiled.matcher(text).matches());
 
 		System.out.println("set vs lists matching (no compilation)");
-		compareBench("list", "set", runs, () -> ownCompiled.matcher(text)
-				.matches(), () -> ownCompiled.setMatcher(text).matches());
+		compareBench("list", "set", runs, //
+				() -> ownCompiled.matcher(text).matches(), //
+				() -> ownCompiled.setMatcher(text).matches());
 	}
 
 	private static String toMilli(long l) {
 		return "" + l / 1000.0;
-	}
-
-	public static void runOwn(String pattern, String text, int times) {
-		Compiler.compile(pattern).matcher(text).matches();
-	}
-
-	public static void runJava(String pattern, String text, int times) {
-		java.util.regex.Pattern.compile(pattern).matcher(text).matches();
-	}
-
-	public static void runOwn(Pattern pattern, String text, int times) {
-		pattern.matcher(text).matches();
-	}
-
-	public static void runJava(java.util.regex.Pattern pattern, String text,
-			int times) {
-		pattern.matcher(text).matches();
 	}
 }
