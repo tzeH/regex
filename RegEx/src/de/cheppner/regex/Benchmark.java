@@ -67,6 +67,10 @@ public class Benchmark {
 		compareBench("own", "java", runs,
 				() -> runOwn(ownCompiled, text, runs),
 				() -> runJava(javaCompiled, text, runs));
+
+		System.out.println("set vs lists matching (no compilation)");
+		compareBench("list", "set", runs, () -> ownCompiled.matcher(text)
+				.matches(), () -> ownCompiled.setMatcher(text).matches());
 	}
 
 	private static String toMilli(long l) {
@@ -74,7 +78,7 @@ public class Benchmark {
 	}
 
 	public static void runOwn(String pattern, String text, int times) {
-		Compiler.compile(pattern).matches(text);
+		Compiler.compile(pattern).matcher(text).matches();
 	}
 
 	public static void runJava(String pattern, String text, int times) {
@@ -82,7 +86,7 @@ public class Benchmark {
 	}
 
 	public static void runOwn(Pattern pattern, String text, int times) {
-		pattern.matches(text);
+		pattern.matcher(text).matches();
 	}
 
 	public static void runJava(java.util.regex.Pattern pattern, String text,

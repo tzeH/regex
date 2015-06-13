@@ -30,7 +30,8 @@ public class Compiler {
 
 		Pattern pattern = Compiler.compile(regex);
 
-		System.out.println(text + " matches: " + pattern.matches(text));
+		System.out.println(text + " matches: "
+				+ pattern.matcher(text).matches());
 	}
 
 	public static Pattern compile(final String regex) {
