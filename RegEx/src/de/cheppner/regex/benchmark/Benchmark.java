@@ -1,4 +1,7 @@
-package de.cheppner.regex;
+package de.cheppner.regex.benchmark;
+
+import de.cheppner.regex.Compiler;
+import de.cheppner.regex.Pattern;
 
 public class Benchmark {
 
